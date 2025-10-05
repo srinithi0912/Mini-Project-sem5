@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Donor Dashboard</title>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+/* Reset & Base Styles */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  display: flex;
+  height: 100vh;
+  background-color: #fafafa;
+  transition: background-color 0.3s, color 0.3s;
+}
+body.dark-mode {
+  background-color: #222;
+  color: #f0f0f0;
+}
+body.dark-mode .impact,
+body.dark-mode .cause-card,
+body.dark-mode #edit-profile-form,
+body.dark-mode #donation-form-container,
+body.dark-mode #impact-summary,
+body.dark-mode #donations-container {
+  color: #ffffff;
+}
+body.dark-mode .impact,
+body.dark-mode .cause-card,
+body.dark-mode #edit-profile-form,
+body.dark-mode #donation-form-container {
+  background-color: #444;
+}
+body.dark-mode .tab {
+  background-color: #555;
+  color: #f0f0f0;
+}
+body.dark-mode .tab.active {
+  background-color: #777;
+}
+.sidebar {
+  background-color: #ffffff;
+  width: 250px;
+  padding: 20px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background-color 0.3s;
+}
+body.dark-mode .sidebar {
+  background-color: #333;
+}
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+.profile-pic-container {
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+#profile-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+}
+#profile-img:hover {
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+#profile-image-upload {
+  display: none;
+}
+.profile-name {
+  font-weight: 600;
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+.nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+}
+.nav li {
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: background-color 0.2s, font-weight 0.2s;
+}
+.nav li:hover {
+  background-color: #f0f0f0;
+}
+body.dark-mode .nav li:hover {
+  background-color: #555;
+}
+.nav li.active {
+  background-color: #e0e0e0;
+  font-weight: 600;
+}
+body.dark-mode .nav li.active {
+  background-color: #555;
+}
+.main {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
+h1 {
+  margin-top: 0;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+button {
+  padding: 10px 20px;
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+button:hover {
+  background-color: #219150;
+}
+.cause-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+.cause-card h3 {
+  margin-top: 0;
+}
+.impact {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+#donation-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+#donation-form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+#donation-form label {
+  font-weight: 600;
+}
+.tabs {
+  display: flex;
+  margin-top: 20px;
+}
+.tab {
+  padding: 10px 20px;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.tab.active {
+  background-color: #e0e0e0;
+  font-weight: 600;
+}
+#settings-options {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+#settings-options button {
+  width: fit-content;
+  margin-bottom: 10px;
+}
+#edit-profile-form {
+  margin-top: 20px;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  max-width:600px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+#edit-profile-form label {
+  font-weight: 600;
+  display: block;
+  margin-top: 10px;
+}
+#edit-profile-form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+#donation-form-container {
+  margin-top: 20px;
+}
+/* Responsive adjustments */
+@media(max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+</style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="profile" id="profile-section">
+    <div class="profile-pic-container">
+      <img id="profile-img" src="images/default.jpg" alt="Profile Picture" />
+      <input type="file" id="profile-image-upload" accept="image/*" />
+    </div>
+    <div class="profile-name" id="profile-name"></div>
+  </div>
+  <ul class="nav">
+    <li id="nav-home" class="active">Home</li>
+    <li id="nav-explore">Explore</li>
+    <li id="nav-donations">My Donations</li>
+    <li id="nav-impact">Impact Reports</li>
+    <li id="nav-settings">Settings</li>
+    <li id="logout-btn" style="margin-top:auto; padding:12px 20px; cursor:pointer; border-top:1px solid #ccc;">Logout</li>
+  </ul>
+</div>
+<div class="main">
+  <!-- Home -->
+  <div id="home-section" class="section" style="display: block;">
+    <h1 id="welcome-message"></h1>
+    <p>Thank you for your generosity. Your support makes a difference!</p>
+    <button id="btn-donate-home">Donate Now</button>
+  </div>
+  <!-- Explore Causes -->
+  <div id="explore-section" class="section" style="display: none;">
+    <h1>Explore Causes</h1>
+    <div id="causes-container"></div>
+  </div>
+  <!-- My Donations -->
+  <div id="donations-section" class="section" style="display: none;">
+    <h1>My Donations</h1>
+    <div class="tabs">
+      <div class="tab active" data-tab="upcoming">Upcoming</div>
+      <div class="tab" data-tab="completed">Completed</div>
+      <div class="tab" data-tab="recurring">Recurring</div>
+    </div>
+    <div id="donations-container" style="margin-top:20px;">
+      <p>No donations yet. Explore causes and donate!</p>
+    </div>
+  </div>
+  <!-- Impact Reports -->
+  <div id="impact-reports-section" class="section" style="display: none;">
+    <h1>Impact Reports</h1>
+    <div class="impact" id="impact-summary">
+      <h3>June 2024</h3>
+      <p>You donated ₹200 last month. Here's how your support made a difference:</p>
+      <ul>
+        <li>Supported 3 schools in underserved areas.</li>
+        <li>Helped plant 500 trees.</li>
+        <li>Provided clean water to 100 communities.</li>
+      </ul>
+    </div>
+    <canvas id="impactChart" style="margin-top:20px; max-width:700px; height:400px;"></canvas>
+  </div>
+  <!-- Settings -->
+  <div id="settings-section" class="section" style="display: none;">
+    <h1>Settings</h1>
+    <div id="settings-options">
+      <button id="btn-change-mode">Change Mode (Light/Dark)</button>
+      <button id="btn-edit-profile">Edit Profile</button>
+    </div>
+    <!-- Edit Profile Form -->
+    <div id="edit-profile-form" style="display:none; margin-top:20px;">
+      <h3>Edit Profile</h3>
+      <label for="profile-fullname">Name:</label>
+      <input type="text" id="profile-fullname" />
+      <label for="profile-phone">Phone:</label>
+      <input type="tel" id="profile-phone" />
+      <label for="profile-address">Address:</label>
+      <input type="text" id="profile-address" />
+      <label for="profile-email">Email:</label>
+      <input type="email" id="profile-email" />
+      <label for="profile-password">Password:</label>
+      <input type="password" id="profile-password" />
+      <button id="save-profile">Save</button>
+      <button id="cancel-edit" style="margin-left:10px;">Cancel</button>
+    </div>
+  </div>
+  <!-- Donation Form -->
+  <div id="donation-form-container" style="display:none; margin-top:20px;">
+    <h3>Make a Donation</h3>
+    <form id="donation-form" >
+      <label for="donation-amount">Amount (₹):</label>
+      <input type="number" id="donation-amount" required />
+      <label for="donation-cause">Cause:</label>
+      <input type="text" id="donation-cause" readonly />
+      <!-- Recurring Donation Checkbox -->
+      <label style="margin-top:10px;">
+        <input type="checkbox" id="recurring-donation" />
+        Make this a recurring donation
+      </label>
+      <button type="submit">Donate</button>
+      <button type="button" id="cancel-donation" style="margin-left:10px;">Cancel</button>
+    </form>
+  </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const API_BASE = "http://localhost:3000"; // Your backend API URL
+
+  const userId = sessionStorage.getItem("userId");
+  const role = sessionStorage.getItem("role");
+  if (!userId || role !== "donor") {
+    alert("Unauthorized. Please login again.");
+    window.location.href = "login.html";
+    return;
+  }
+
+  // Elements references
+  const profileNameEl = document.querySelector('.profile-name');
+  const profileImgEl = document.getElementById('profile-img');
+  const profileImgInput = document.getElementById('profile-image-upload');
+
+  const sections = {
+    home: document.getElementById('home-section'),
+    explore: document.getElementById('explore-section'),
+    donations: document.getElementById('donations-section'),
+    impact: document.getElementById('impact-reports-section'),
+    settings: document.getElementById('settings-section')
+  };
+
+  const navItems = {
+    home: document.getElementById('nav-home'),
+    explore: document.getElementById('nav-explore'),
+    donations: document.getElementById('nav-donations'),
+    impact: document.getElementById('nav-impact'),
+    settings: document.getElementById('nav-settings')
+  };
+
+  // Load profile on start
+  fetch(`${API_BASE}/donor/${userId}`)
+    .then(res => {
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      console.log("Profile data:", data);
+      profileNameEl.textContent = data.name;
+      if (data.profilePicUrl) {
+        profileImgEl.src = data.profilePicUrl;
+      }
+      document.getElementById('welcome-message').textContent = `Welcome, ${data.name}!`;
+      document.getElementById('profile-fullname').value = data.name;
+      document.getElementById('profile-email').value = data.email;
+      document.getElementById('profile-phone').value = data.phone;
+      const addrParts = [data.doorNo, data.street, data.city, data.state, data.pincode].filter(Boolean);
+      document.getElementById('profile-address').value = addrParts.join(', ');
+    })
+    .catch(err => {
+      alert("Failed to load profile: " + err.message);
+      console.error(err);
+    });
+
+  // Navigation handling
+  Object.keys(navItems).forEach(key => {
+    navItems[key].addEventListener('click', () => {
+      // Show selected section
+      Object.keys(sections).forEach(k => sections[k].style.display = 'none');
+      sections[key].style.display = 'block';
+
+      // Highlight active nav
+      Object.values(navItems).forEach(item => item.classList.remove('active'));
+      navItems[key].classList.add('active');
+
+      // Load data if needed
+      if (key === 'donations') {
+        loadDonations();
+      } else if (key === 'impact') {
+        loadImpactReport();
+      } else if (key === 'explore') {
+        loadCauses();
+      }
+    });
+  });
+
+// After DOM is ready, attach tab event listeners
+document.querySelectorAll('.tabs .tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    // Remove 'active' class from all tabs
+    document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    const tabType = tab.dataset.tab;
+    loadDonations(tabType);
+  });
+});
+
+  // Logout
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    sessionStorage.clear();
+    window.location.href = 'login.html'; // redirect to login
+  });
+
+  // Dark/Light Mode toggle
+  document.getElementById('btn-change-mode').addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('mode', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+  });
+
+  // Load mode preference
+  if (localStorage.getItem('mode') === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+
+  // Profile picture upload
+  profileImgEl.addEventListener('click', () => {
+    profileImgInput.click();
+  });
+  profileImgInput.addEventListener('change', () => {
+    const file = profileImgInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        // Show preview
+        profileImgEl.src = dataUrl;
+        // Upload to server
+        uploadProfilePic(dataUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Save profile
+  document.getElementById('save-profile').addEventListener('click', () => {
+    const updatedProfile = {
+      name: document.getElementById('profile-fullname').value.trim(),
+      email: document.getElementById('profile-email').value.trim(),
+      phone: document.getElementById('profile-phone').value.trim(),
+    };
+    const password = document.getElementById('profile-password').value.trim();
+    if (password) updatedProfile.password = password;
+
+    fetch(`${API_BASE}/donor/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedProfile)
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message || 'Profile updated');
+      profileNameEl.textContent = updatedProfile.name;
+      document.getElementById('edit-profile-form').style.display = 'none';
+    })
+    .catch(err => {
+      alert('Error updating profile');
+      console.error(err);
+    });
+  });
+
+  // Cancel edit profile
+  document.getElementById('cancel-edit').addEventListener('click', () => {
+    document.getElementById('edit-profile-form').style.display = 'none';
+  });
+
+  // Edit profile button
+  document.getElementById('btn-edit-profile').addEventListener('click', () => {
+    document.getElementById('edit-profile-form').style.display = 'block';
+  });
+
+  // Load Causes dynamically
+function loadCauses() {
+  fetch(`${API_BASE}/causes`)
+    .then(res => res.json())
+    .then(causes => {
+      const container = document.getElementById('causes-container');
+      container.innerHTML = '';
+      if (!causes || causes.length === 0) {
+        container.innerHTML = '<p>No causes available at the moment.</p>';
+        return;
+      }
+      causes.forEach(cause => {
+        const causeDiv = document.createElement('div');
+        causeDiv.className = 'cause-card';
+        causeDiv.innerHTML = `
+          <h3>${cause.title}</h3>
+          <p>${cause.description}</p>
+          ${cause.imageUrl ? `<img src="${cause.imageUrl}" alt="${cause.title}" style="width:100%; max-height:200px; object-fit:cover; border-radius:8px; margin-top:10px;">` : ''}
+          <button class="btn-donate-cause" data-cause-id="${cause.id}" data-cause="${cause.title}" data-amount="${cause.defaultAmount}">Donate ₹${cause.defaultAmount}</button>
+        `;
+        container.appendChild(causeDiv);
+      });
+      // Attach event listeners to new buttons
+      document.querySelectorAll('.btn-donate-cause').forEach(btn => {
+        btn.addEventListener('click', () => {
+          openDonationForm(btn.dataset.cause, btn.dataset.amount, btn.dataset.causeId);
+        });
+      });
+    })
+    .catch(() => {
+      document.getElementById('causes-container').innerHTML = '<p>Failed to load causes.</p>';
+    });
+}
+
+// Open donation form
+function openDonationForm(cause, amount, causeId) {
+  document.getElementById('donation-form-container').style.display = 'block';
+  document.getElementById('donation-cause').value = cause;
+  document.getElementById('donation-cause').setAttribute('data-cause-id', causeId);
+  document.getElementById('donation-amount').value = amount;
+  document.getElementById('recurring-donation').checked = false;
+}
+
+// Close donation form
+document.getElementById('cancel-donation').addEventListener('click', () => {
+  document.getElementById('donation-form-container').style.display = 'none';
+});
+
+// Handle donation submission
+document.getElementById('donation-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const amountVal = parseFloat(document.getElementById('donation-amount').value);
+  const cause = document.getElementById('donation-cause').value;
+  const causeId = document.getElementById('donation-cause').getAttribute('data-cause-id');
+
+  const recurring = document.getElementById('recurring-donation').checked;
+  
+  if (!causeId) {
+    alert("Cause ID missing. Please try again.");
+    return;
+  }
+
+  if (isNaN(amountVal) || amountVal <= 0) {
+    alert('Please enter a valid amount.');
+    return;
+  }
+
+  fetch(`${API_BASE}/donations`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      donorId: userId,
+      causeId: causeId,
+      amount: amountVal,
+      recurring: recurring
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message || 'Donation successful!');
+    document.getElementById('donation-form-container').style.display = 'none';
+    // Refresh donations list
+    loadDonations();
+  })
+  .catch(() => {
+    alert('Error processing donation.');
+  });
+});
+
+// Load Donations
+function loadDonations(filterType = 'all') {
+  fetch(`${API_BASE}/donor/${userId}/donations`)
+    .then(res => {
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      return res.json();
+    })
+    .then(donations => {
+      console.log('All donations:', donations); // check data structure
+      let filteredDonations = donations;
+
+      if (filterType === 'upcoming') {
+        // "Upcoming" might be donations with status 'Pending'
+        filteredDonations = donations.filter(d => d.status === 'Pending');
+      } else if (filterType === 'completed') {
+        filteredDonations = donations.filter(d => d.status === 'Completed');
+      } else if (filterType === 'recurring') {
+        // recurring is 1 for recurring, 0 for non-recurring
+        filteredDonations = donations.filter(d => d.recurring === 1);
+      }
+      console.log('Filtered donations:', filteredDonations);
+      displayDonations(filteredDonations);
+    })
+    .catch(err => {
+      console.error('Error loading donations:', err);
+      document.getElementById('donations-container').innerHTML = 'Failed to load donations.';
+    });
+}
+function displayDonations(donations) {
+  const container = document.getElementById('donations-container');
+  container.innerHTML = '';
+
+  if (!donations || donations.length === 0) {
+    container.innerHTML = '<p>No donations found for this category.</p>';
+    return;
+  }
+
+  donations.forEach(d => {
+    // You might want to fetch cause name using cause_id, or include cause name in API response
+    // For simplicity, assume cause name is available as 'causeName' or fetch separately
+    const causeName = d.causeTitle || 'Cause'; // replace with actual cause lookup if needed
+    const dateStr = new Date(d.created_at).toLocaleDateString();
+    const div = document.createElement('div');
+    div.className = 'cause-card';
+    div.innerHTML = `
+      <h3>${causeName}</h3>
+      <p>Amount: ₹${d.amount}</p>
+      <p>Status: ${d.status}</p>
+      <p>Date: ${new Date(d.created_at).toLocaleDateString()}</p>
+      ${d.recurring === 1 ? '<p>Recurring Donation</p>' : ''}
+    `;
+    container.appendChild(div);
+  });
+}
+// Load Impact Report
+function loadImpactReport() {
+  const ctx = document.getElementById('impactChart').getContext('2d');
+  if (window.impactChartInstance) window.impactChartInstance.destroy();
+
+  fetch(`${API_BASE}/impact`)
+    .then(res => res.json())
+    .then(data => {
+      window.impactChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.labels || ['Schools', 'Trees', 'Water'],
+          datasets: [{
+            label: 'Impact',
+            data: data.values || [50, 500, 100],
+            backgroundColor: ['#27ae60', '#2ecc71', '#3498db']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    })
+    .catch(() => {
+      window.impactChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Schools', 'Trees', 'Water'],
+          datasets: [{
+            label: 'Impact',
+            data: [50, 500, 100],
+            backgroundColor: ['#27ae60', '#2ecc71', '#3498db']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+    });
+}
+
+// Upload Profile Picture
+function uploadProfilePic(dataUrl) {
+  fetch(`${API_BASE}/donor/${userId}/profilePic`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ image: dataUrl })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.profilePicUrl) {
+      profileImgEl.src = data.profilePicUrl + '?t=' + new Date().getTime();
+    }
+  })
+  .catch(() => {
+    alert('Failed to upload profile picture.');
+  });
+}
+
+// Initialize default section
+sections.home.style.display = 'block';
+
+});
+</script>
+</body>
+</html>

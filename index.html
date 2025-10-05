@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Weshare - Make a Difference</title>
+<style>
+  /* Reset and base styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: /*'Roboto', sans-serif*/'Pacifico', cursive;/*'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+    color: #333;
+    line-height: 1.6;
+    background-color: #fafafa;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Header styles */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 1000; 
+  }
+  .logo {
+    font-size: 2em;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  nav {
+    display: flex;
+    gap: 20px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+  }
+  nav a {
+    color: #34495e;
+    font-weight: 600;
+    font-size: 1em;
+    transition: color 0.3s;
+  }
+  nav a:hover {
+    color: #e74c3c;
+  }
+ 
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .donate-btn {
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s;
+  }
+  .donate-btn:hover {
+    background-color: #c0392b;
+  }
+  /* Hero section styles */
+  .hero {
+   background: linear-gradient(rgba(44, 62, 80, 0.4), rgba(44, 62, 80, 0.4)), url('images/1-1.png') center/cover no-repeat;
+   
+    color: #fff;
+    padding: 80px 20px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 3em;
+    margin-bottom: 80px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow:
+      1px 1px 2px rgba(0, 0, 0, 0.5),
+      -1px -1px 2px rgba(0, 0, 0, 0.5);
+  }
+  .hero h6 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow:
+      1px 1px 2px rgba(0, 0, 0, 0.5),
+      -1px -1px 2px rgba(0, 0, 0, 0.5);
+
+  }
+  .btn-explore {
+    background-color: #27ae60;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.2em;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .btn-explore:hover {
+    background-color: #1e8449;
+  }
+
+  /* Sections styles */
+  section {
+    padding: 50px 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #2c3e50;
+  }
+
+  /* Featured Campaigns */
+  .campaigns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  .campaign {
+    flex: 1 1 300px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .campaign:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  .campaign img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  .campaign-content {
+    padding: 15px;
+  }
+  .campaign-content h3 {
+    margin-bottom: 10px;
+    font-size: 1.25em;
+    color: #34495e;
+  }
+  /* Donation Categories & Volunteer Opportunities */
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  .card {
+    flex: 1 1 200px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  .card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+  .card-content {
+    padding: 15px;
+    text-align: center;
+  }
+  .card-content h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #2c3e50;
+  }
+  .card-content p {
+    font-size: 0.95em;
+    color: #555;
+  }
+
+  /* Volunteer Opportunities */
+  .volunteer {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    max-width: 300px;
+    margin: auto;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .volunteer:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  .volunteer img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  .volunteer h4 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #34495e;
+    text-align: center;
+  }
+  .volunteer p {
+    font-size: 0.95em;
+    color: #555;
+    text-align: center;
+  }
+
+  /* Footer styles */
+  footer {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 30px 20px;
+    text-align: center;
+  }
+  footer p {
+    margin-bottom: 8px;
+  }
+  /* Responsive adjustments */
+  @media(max-width: 992px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    nav {
+      margin-top: 10px;
+    }
+    .header-controls {
+      margin-top: 10px;
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .cards-container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .volunteer {
+      max-width: 90%;
+    }
+  }
+  section[id] {
+  scroll-margin-top: 70px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Weshare</div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#campaigns">Campaigns</a>
+    <a href="#organizations">Organizations</a>
+    <a href="#volunteer">Volunteer</a>
+    <!-- Styled Login link -->
+    <a href="login.html" class="login">Login</a>
+  </nav>
+  <div class="header-controls">
+    
+    <button class="donate-btn" id="donateBtn">Donate</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <h1 >Make a Difference Today</h1>
+  <h6 >Join our community of givers and support causes you care about.</h6>
+  <button class="btn-explore" onclick="alert('Explore Campaigns')">Explore Campaigns</button>
+</section>
+
+<!-- FEATURED CAMPAIGNS -->
+<section id="campaigns">
+  <h2>Featured Campaigns</h2>
+  <div class="campaigns" id="campaignsContainer">
+    <!-- Campaign cards will be injected here -->
+  </div>
+</section>
+
+<!-- DONATION CATEGORIES -->
+<section id="organizations">
+  <h2 style="text-align:center;">Donation Categories</h2>
+  <div class="cards-container" id="categoriesContainer">
+    <!-- Category cards will be injected here -->
+  </div>
+</section>
+
+<!-- Volunteer Opportunities -->
+<section id="volunteer">
+  <h2 style="text-align:center;">Volunteer Opportunities</h2>
+  <div class="cards-container" id="volunteersContainer" style="justify-content: center;">
+    <!-- Volunteer cards will be injected here -->
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>About Us | Contact | Privacy Policy | Terms of Service</p>
+  <p>&copy; 2023 Weshare. All rights reserved.</p>
+</footer>
+
+<script>
+  // Data for campaigns, categories, and volunteers
+  const campaignsData = [
+    {
+      title: 'Community Cleanup Drive',
+      desc: 'Help clean up local parks and beaches.',
+      img: 'images/6.webp'
+    },
+    {
+      title: 'Support Children\'s Education',
+      desc: 'Provide educational resources for underprivileged children.',
+      img: 'images/7.jpg'
+    },
+    {
+      title: 'Protect Our Oceans',
+      desc: 'Join efforts to conserve marine life and reduce pollution.',
+      img: 'images/8.jpg'
+    }
+  ];
+
+  const categoriesData = [
+    {
+      title: 'Education',
+      desc: 'Support schools and educational programs.',
+      img: 'images/9.jpg'
+    },
+    {
+      title: 'Environment',
+      desc: 'Contribute to environmental conservation efforts.',
+      img: 'images/11.jpg'
+    },
+    {
+      title: 'Health',
+      desc: 'Help provide healthcare to those in need.',
+      img: 'images/14.jpg'
+    },
+    {
+      title: 'Animal Welfare',
+      desc: 'Support shelters and rescue organizations.',
+      img: 'images/12.jpg'
+    }
+  ];
+
+  const volunteersData = [
+    {
+      title: 'Tree Planting Event',
+      desc: 'Join us to plant trees and beautify our community.',
+      img: 'images/10.jpg'
+    },
+    
+    {
+      title: 'Tutoring Program',
+      desc: 'Volunteer as a tutor for students in need.',
+      img: 'images/13.jpg'
+    }
+  ];
+
+  // Function to generate campaign cards
+  function loadCampaigns(filterText='') {
+    const container = document.getElementById('campaignsContainer');
+    container.innerHTML = '';
+    const filtered = campaignsData.filter(c => c.title.toLowerCase().includes(filterText.toLowerCase()) || c.desc.toLowerCase().includes(filterText.toLowerCase()));
+    filtered.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'campaign';
+      card.innerHTML = `
+        <img src="${c.img}" alt="${c.title}">
+        <div class="campaign-content">
+          <h3>${c.title}</h3>
+          <p>${c.desc}</p>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Load categories
+  function loadCategories() {
+    const container = document.getElementById('categoriesContainer');
+    categoriesData.forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${c.img}" alt="${c.title}">
+        <div class="card-content">
+          <h3>${c.title}</h3>
+          <p>${c.desc}</p>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Load volunteers
+  function loadVolunteers() {
+    const container = document.getElementById('volunteersContainer');
+    volunteersData.forEach(v => {
+      const card = document.createElement('div');
+      card.className = 'volunteer';
+      card.innerHTML = `
+        <img src="${v.img}" alt="${v.title}">
+        <h4>${v.title}</h4>
+        <p>${v.desc}</p>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Initialize page
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCampaigns();
+    loadCategories();
+    loadVolunteers();
+
+    
+  
+
+    // Donate button interaction
+    document.getElementById('donateBtn').addEventListener('click', () => {
+      alert('Thank you for choosing to donate! This feature is coming soon.');
+    });
+  });
+</script>
+
+</body>
+</html>

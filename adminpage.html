@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeShare Admin Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Lucida Calligraphy", cursive;
+      display: flex;
+      font-weight: bolder;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: darkcyan;
+      color: #ecf0f1;
+      height: 100vh;
+      position: fixed;
+      padding-top: 20px;
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 22px;
+      border-bottom: 1px solid #7f8c8d;
+      padding-bottom: 10px;
+    }
+    .sidebar a {
+      display: block;
+      color: #ecf0f1;
+      padding: 12px 20px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .sidebar a:hover {
+      background: lightblue;
+      color: black;
+    }
+
+    /* Main Content */
+    .main {
+      margin-left: 250px;
+      padding: 20px;
+      width: 100%;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #3498db;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .card h3 {
+      margin: 10px 0;
+    }
+    .hidden {
+      display: none;
+    }
+    
+  /* Dark mode */
+  .dark-mode {
+    background-color: #121212;
+    color: #f5f5f5;
+  }
+
+  .dark-mode table th,
+  .dark-mode table td {
+    border-color: #444;
+  }
+
+  .modal {
+    display:none;
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:rgba(0,0,0,0.6);
+    justify-content:center;
+    align-items:center;
+  }
+  .modal-content {
+    background:#fff;
+    padding:20px;
+    width:400px;
+    border-radius:10px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.3);
+  }
+  .modal-content h3 { margin-top:0; }
+  .close {
+    float:right;
+    font-size:20px;
+    cursor:pointer;
+    color:#555;
+  }
+  .close:hover { color:red; }
+  /* Settings container stacked vertically */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+  align-items: flex-start; /* align to left */
+}
+
+/* Default light mode */
+.settings-container .settings-card {
+  background: lightskyblue;
+  color: black;
+}
+
+/* Dark Mode */
+.dark-mode .settings-container .settings-card {
+  background-color: violet;  /* change to violet */
+  color: black;
+}
+
+/* Dark Contrast Mode */
+.dark-contrast-mode .settings-container .settings-card {
+  background-color: #222; /* keep dark for contrast mode */
+  color: white;
+}
+
+/* Settings card smaller box */
+.settings-card {
+  background: lightskyblue;
+  width: 250px;   /* reduced width like a box */
+  height:60px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+
+/* Hover + Shake animation */
+.settings-card:hover {
+  background: lightblue;
+  color: black;
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.settings-wrapper {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.settings-content {
+  flex: 1;
+  background: #f9f9f9;       /* default light */
+  padding: 40px;             /* more padding for centering */
+  border-radius: 8px;
+  min-height: 250px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;    /* vertical center */
+  align-items: center;        /* horizontal center */
+  text-align: center;
+}
+
+.dark-mode .settings-content {
+  background: #1e1e1e;
+  color: white;
+}
+
+.settings-content h3 {
+  font-size: 22px;   /* increase this value as you like */
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: black;    /* adjust based on your theme */
+}
+
+.dark-mode .settings-content h3 {
+  font-size: 22px;   /* increase this value as you like */
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: white;    /* adjust based on your theme */
+}
+  
+/* Buttons inside settings content */
+.settings-content button {
+  font-size: 20px;       /* bigger button text */
+  padding: 15px 30px;    /* bigger button size */
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+/* Dark Mode Dashboard card text */
+.dark-mode #dashboard .card {
+    background-color: white;  /* optional: keep cards white */
+    color: black;              /* card text black */
+}
+
+/* If you want numbers/paragraphs specifically */
+.dark-mode #dashboard .card p,
+.dark-mode #dashboard .card h3 {
+    color: black;
+}
+
+/* Button hover effect */
+.settings-content button:hover {
+  transform: scale(1.05);
+}
+/* Dark Contrast Mode */
+/* Dark Contrast Mode */
+.dark-contrast-mode {
+  background-color: #121212;  /* same as dark mode */
+  color: #f5f5f5;
+}
+
+/* Sidebar in dark contrast */
+.dark-contrast-mode .sidebar {
+  background-color: #111;
+  color: #fff;
+}
+
+.dark-contrast-mode .sidebar a:hover {
+  background: #444;
+  color: #fff;
+}
+
+/* Header in dark contrast */
+.dark-contrast-mode .header {
+  background: #222;
+  color: #fff;
+}
+
+/* Cards and right-side settings content */
+.dark-contrast-mode .card,
+.dark-contrast-mode .settings-content {
+  background-color: #1e1e1e;  /* same as dark mode */
+  color: white;
+  box-shadow: 0px 2px 5px #000;
+  border: 2px solid darkblue;  /* dark blue border */
+}
+
+/* Settings container (left side boxes) */
+.dark-contrast-mode .settings-container .settings-card {
+  background-color: violet;  /* same as dark mode */
+  color: white;
+  border: 2px solid darkblue;  /* dark blue border */
+}
+
+/* Profile Settings Inputs */
+/* Container for each profile field */
+.profile-field {
+    display: flex;
+    align-items: center;      /* vertically center label & input */
+    margin-bottom: 20px;
+    gap: 20px;                /* space between label and input */
+}
+
+/* Profile Labels */
+.profile-field label {
+    font-size: 20px;
+    font-weight: bold;
+    width: 150px;             /* fixed width for labels */
+    text-align: right;        /* align label text to right */
+}
+
+/* Profile Inputs */
+.profile-field input[type="text"],
+.profile-field input[type="email"],
+.profile-field input[type="password"] {
+    flex: 1;                  /* input takes remaining space */
+    font-size: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Update Button */
+#settingsContent button {
+    font-size: 24px;
+    padding: 15px 40px;
+    background-color: darkcyan;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;       /* center the button */
+}
+
+#settingsContent button:hover {
+    background-color: teal;
+}
+
+.user-role-cards {
+  display: flex;
+  flex-direction: column;  /* stack vertically */
+  gap: 20px;               /* space between cards */
+  margin-bottom: 20px;
+}
+
+.role-card {
+  width: 300px;            /* bigger width */
+  margin: 0 auto;          /* center horizontally */
+  background-color: lightskyblue;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 15px;     /* slightly more rounded */
+  padding: 30px 20px;      /* taller card */
+  font-size: 24px;         /* bigger text */
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.role-card:hover {
+  background-color: deepskyblue;
+  color: white;
+  transform: scale(1.08);  /* slightly bigger hover effect */
+}
+
+
+
+/* User table styling */
+#userDetails table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#userDetails th, #userDetails td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+}
+
+#userDetails th {
+  background-color: darkcyan;
+  color: white;
+}
+
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    z-index: 1000;
+}
+.back-btn:hover {
+    background-color:whitesmoke;
+    transform: scale(1.1);
+}
+.back-btn:focus {
+    outline: none;
+}
+
+  </style>
+</head>
+<body>
+  <!-- Place this anywhere on your admin page -->
+  <button onclick="goBack()" class="back-btn">← </button>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>WeShare Admin</h2>
+    <a href="#" onclick="showSection('dashboard')">Dashboard</a>
+    <a href="#" onclick="showSection('users')">Users</a>
+    <a href="#" onclick="showSection('donations')">Donations</a>
+    <a href="#" onclick="showSection('events')">Events</a>
+    <a href="#" onclick="showSection('reports')">Impact Reports</a>
+    <a href="#" onclick="showSection('settings')">Settings</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <div class="header">
+      <h1 id="page-title">Dashboard</h1>
+      <div>Admin Profile ▾</div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="section">
+      <div class="card-container">
+        <div class="card">
+          <h3>Total Donors</h3>
+          <p id="donorCount">0</p>
+        </div>
+        <div class="card">
+          <h3>Total Volunteers</h3>
+          <p id="volunteerCount">0</p>
+        </div>
+        <div class="card">
+          <h3>Total Organization</h3>
+           <p id="orgCount">0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users -->
+    <!-- Users Section -->
+<div id="users" class="section hidden">
+  <h2>Manage Users</h2>
+  
+  <!-- Role Cards -->
+  <div class="user-role-cards" style="display:flex; gap:20px; margin-bottom:20px;">
+    <div class="role-card" onclick="window.location.href='donordet.html'">Donors</div>
+    <div class="role-card" onclick="window.location.href='volunteerdet.html'">Volunteers</div>
+    <div class="role-card" onclick="window.location.href='organdet.html'">Organizations</div>
+  </div>
+
+  
+  <!-- Container for users details -->
+  <div id="userDetails">
+    <p>Select a role above to view users.</p>
+  </div>
+</div>
+
+
+    <!-- Donations -->
+    <div id="donations" class="section hidden">
+      <h2>Donations</h2>
+      <ul>
+        <li>Money Donation - ₹ 5000 - Donor: U001</li>
+        <li>Clothes - 10 items - Donor: U005</li>
+        <li>Blood - B+ - Donor: U010</li>
+      </ul>
+    </div>
+
+    <!-- Events -->
+    <div id="events" class="section hidden">
+      <h2>Manage Events</h2>
+      <button>Create New Event</button>
+      <ul>
+        <li>Food Drive - Chennai - 20/09/2025</li>
+        <li>Blood Camp - Bangalore - 01/10/2025</li>
+      </ul>
+    </div>
+
+    <!-- Reports -->
+    <div id="reports" class="section hidden">
+      <h2>Impact Reports</h2>
+      <p>Report #1: Food Drive helped 200 families (Published on 10/09/2025)</p>
+      <p>Report #2: Blood Camp collected 50 units (Published on 02/09/2025)</p>
+    </div>
+
+ 
+
+<!-- System Settings Section -->
+<div id="settings" class="section hidden">
+  <h2>System Settings</h2>
+
+  <!-- Settings Cards -->
+  <div class="settings-wrapper">
+    <!-- Left side: Setting options -->
+    <div class="settings-container">
+      <div class="settings-card" onclick="showSettingsContent('profile')">Profile Settings</div>
+      <div class="settings-card" onclick="showSettingsContent('theme')">Theme Settings</div>
+      <div class="settings-card" onclick="showSettingsContent('notify')">Notifications</div>
+      <div class="settings-card" onclick="showSettingsContent('security')">Security</div>
+      <div class="settings-card" onclick="showSettingsContent('backup')">Backup & Data</div>
+    </div>
+
+    <div class="settings-content" id="settingsContent">
+      <h3>➡️ Select a setting to view details</h3>
+    </div>
+  </div>
+</div>
+
+
+<!-- POPUPS -->
+
+<!-- Profile Settings Modal -->
+<div id="profileModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('profileModal')">&times;</span>
+    <h3>Profile Settings</h3>
+    <label>Admin Name:</label><br>
+    <input type="text" value="Admin User"><br><br>
+    <label>Email:</label><br>
+    <input type="email" value="admin@weshare.org"><br><br>
+    <label>Password:</label><br>
+    <input type="password" placeholder="********"><br><br>
+    <button onclick="alert('Profile Updated!')">Update Profile</button>
+  </div>
+</div>
+
+<!-- Theme Settings Modal -->
+<div id="themeModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('themeModal')">&times;</span>
+    <h3>Theme Settings</h3>
+    <button onclick="toggleTheme()">Toggle Dark/Light Mode</button>
+  </div>
+</div>
+
+<!-- Notifications Modal -->
+<div id="notifyModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('notifyModal')">&times;</span>
+    <h3>Notification Settings</h3>
+    <label><input type="checkbox" checked> Email Alerts</label><br>
+    <label><input type="checkbox"> SMS Alerts</label><br>
+    <button onclick="alert('Notification Settings Saved!')">Save</button>
+  </div>
+</div>
+
+<!-- Security Modal -->
+<div id="securityModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('securityModal')">&times;</span>
+    <h3>Security Settings</h3>
+    <label><input type="checkbox"> Enable Two-Factor Authentication</label><br><br>
+    <label>Session Timeout:</label>
+    <select>
+      <option>15 minutes</option>
+      <option>30 minutes</option>
+      <option>1 hour</option>
+    </select><br><br>
+    <button onclick="alert('Security Settings Saved!')">Save</button>
+  </div>
+</div>
+
+<!-- Backup Modal -->
+<div id="backupModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('backupModal')">&times;</span>
+    <h3>Backup & Data</h3>
+    <p>You can backup or export system data.</p>
+    <button onclick="alert('Database Backup Started!')">Backup Now</button>
+    <button onclick="alert('Data Exported Successfully!')">Export Data</button>
+  </div>
+</div>
+
+<!-- MODAL STYLE + SCRIPT -->
+  <script>
+    function showSettingsContent(type) {
+  const content = document.getElementById("settingsContent");
+  let html = "";
+
+  if (type === "profile") {
+    html = `
+      <h3 style="text-align:center; font-size:28px;">👤 Profile Settings</h3>
+
+      <div class="profile-field">
+        <label>Admin Name:</label>
+        <input type="text" value="Admin User">
+      </div>
+
+      <div class="profile-field">
+        <label>Email:</label>
+        <input type="email" value="admin@weshare.org">
+      </div>
+
+      <div class="profile-field">
+        <label>Password:</label>
+        <input type="password" placeholder="********">
+      </div>
+
+      <button onclick="alert('Profile Updated!')">Update Profile</button>
+    `;
+}
+ else if (type === "theme") {
+    html = `
+      <h3>🎨 Theme Settings</h3>
+       <button onclick="setTheme('light')">Light Mode</button>
+       <button onclick="setTheme('dark')">Dark Mode</button>
+       <button onclick="setTheme('dark-contrast')">Dark Contrast</button>
+    `;
+  } else if (type === "notify") {
+    html = `
+      <h3>🔔 Notification Settings</h3>
+      <label><input type="checkbox" checked> Email Alerts</label><br>
+      <label><input type="checkbox"> SMS Alerts</label><br>
+      <button onclick="alert('Notification Settings Saved!')">Save</button>
+    `;
+  } else if (type === "security") {
+    html = `
+      <h3>🔒 Security Settings</h3>
+      <label><input type="checkbox"> Enable Two-Factor Authentication</label><br><br>
+      <label>Session Timeout:</label>
+      <select>
+        <option>15 minutes</option>
+        <option>30 minutes</option>
+        <option>1 hour</option>
+      </select><br><br>
+      <button onclick="alert('Security Settings Saved!')">Save</button>
+    `;
+  } else if (type === "backup") {
+    html = `
+      <h3>💾 Backup & Data</h3>
+      <p>You can backup or export system data.</p>
+      <button onclick="alert('Database Backup Started!')">Backup Now</button>
+      <button onclick="alert('Data Exported Successfully!')">Export Data</button>
+    `;
+  }
+
+  content.innerHTML = html;
+}
+
+  </script>
+
+<script>
+function goBack() {
+    history.back();
+}
+</script>
+
+<script>
+  function openModal(id) {
+    document.getElementById(id).style.display = "flex";
+  }
+  function closeModal(id) {
+    document.getElementById(id).style.display = "none";
+  }
+</script>
+
+
+<script>
+  function updateProfile() {
+    alert("Profile updated successfully!");
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle("dark-mode");
+  }
+
+  function setTheme(mode) {
+    // Remove all theme classes
+    document.body.classList.remove("dark-mode", "dark-contrast-mode");
+    
+    if(mode === "dark") {
+        document.body.classList.add("dark-mode");
+    } else if(mode === "dark-contrast") {
+        document.body.classList.add("dark-contrast-mode");
+    }
+
+    // Save preference
+    localStorage.setItem("adminTheme", mode);
+}
+
+// Load saved theme on page load
+window.onload = function() {
+    const savedTheme = localStorage.getItem("adminTheme");
+    if(savedTheme) setTheme(savedTheme);
+}
+
+</script>
+
+  <script>
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
+      // Show selected section
+      document.getElementById(sectionId).classList.remove('hidden');
+      // Update page title
+      document.getElementById("page-title").innerText = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
+    }
+  </script>
+  <script>
+  async function loadDashboardStats() {
+    try {
+      const res = await fetch("http://localhost:5000/admin/stats");
+      const data = await res.json();
+
+      document.getElementById("donorCount").innerText = data.donor || 0;
+      document.getElementById("volunteerCount").innerText = data.volunteer || 0;
+      document.getElementById("orgCount").innerText = data.organization || 0;
+    } catch (err) {
+      console.error("Error loading stats:", err);
+    }
+  }
+
+  // Show section and refresh stats if it's dashboard
+  function showSection(sectionId) {
+  document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
+  document.getElementById(sectionId).classList.remove('hidden');
+
+  document.getElementById("page-title").innerText =
+    sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
+
+  // Highlight sidebar link
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  const link = document.getElementById("link-" + sectionId);
+  if(link) link.classList.add('active');
+
+  // Load dashboard stats
+  if(sectionId === "dashboard") loadDashboardStats();
+}
+
+
+  // On page load
+  window.onload = function() {
+  const savedTheme = localStorage.getItem("adminTheme");
+  if(savedTheme) setTheme(savedTheme);
+
+  // Show section based on hash or dashboard default
+  const hash = window.location.hash.replace("#", "");
+  if(hash && document.getElementById(hash)) {
+    showSection(hash);
+    document.getElementById(hash).scrollIntoView({behavior:"smooth"});
+  } else {
+    showSection("dashboard");
+  }
+};
+
+</script>
+  <script>
+     async function loadUsers(role) {
+     const section = document.getElementById("userDetails");
+     section.innerHTML = `<p>Loading ${role} data...</p>`;
+
+     try {
+        // fetch users by role from backend
+        const res = await fetch(`http://localhost:5000/users?role=${role.toLowerCase()}`);
+        if (!res.ok) throw new Error("Failed to fetch user data");
+
+        const users = await res.json();
+
+        if (users.length === 0) {
+           section.innerHTML = `<p>No ${role}s found in the database.</p>`;
+           return;
+        }
+
+        // build HTML table dynamically
+        let table = `
+            <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+            <tr style="background-color:#eee;">
+               <th>Email</th>
+               <th>Name</th>
+               <th>Phone</th>
+               <th>Address</th>
+               <th>Role</th>
+            </tr>
+            </thead>
+            <tbody>
+    `    ;
+
+        users.forEach(u => {
+            table += `
+            <tr>
+              <td>${u.email}</td>
+              <td>${u.name}</td>
+              <td>${u.phone || '-'}</td>
+              <td>${u.address || '-'}</td>
+              <td>${u.role}</td>
+            </tr>
+      `    ;
+        });
+
+         table += `</tbody></table>`;
+         section.innerHTML = table;
+
+         } catch (err) {
+            console.error("❌ Error loading users:", err);
+            section.innerHTML = `<p style="color:red;">Error loading ${role} details.</p>`;
+         }
+     }
+     
+   </script>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Organization Details</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: cursive;
+      font-style: italic;
+      background: url("image/organization_page.jpg") no-repeat center center;
+      background-size: cover;   
+      display: flex;
+      justify-content: center;   /* Center form horizontally */
+      align-items: center;       /* Center form vertically */
+      height: 100vh;
+    }
+
+    .org-form-container {
+      background: white;
+      padding: 30px;
+      font-size: 24px;
+      border: 1.5px solid blueviolet;
+      border-radius: 20px;
+      width: 400px;
+      max-height: 90vh;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      font-weight: bold;
+      text-align: center;
+      color: #333;
+      animation: popup 0.5s ease-in-out;
+    }
+
+    .org-form-container h2 {
+      margin: 5px 0 20px;
+      font-size: 26px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 95%;
+      padding: 10px;
+      font-family: cursive;
+      font-style: italic;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .submit-button {
+      width: 70%;
+      padding: 12px;
+      font-family: cursive;
+      font-style: italic;
+      font-size: 18px;
+      background-color: #6a5acd;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #4b3cb0;
+    }
+
+    @keyframes popup {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="org-form-container">
+  <h2>Organization Details</h2>
+  <form id="orgForm">
+    <div class="form-group">
+      <label for="orgName">Organization Name</label>
+      <input type="text" id="orgName" placeholder="Enter organization name" required>
+    </div>
+    <div class="form-group">
+      <label for="regNumber">Registration Number</label>
+      <input type="text" id="regNumber" placeholder="Enter registration number" required>
+    </div>
+    <div class="form-group">
+      <label for="orgType">Organization Type</label>
+      <select id="orgType" required>
+        <option value="">Select type</option>
+        <option value="ngo">NGO</option>
+        <option value="company">Company</option>
+        <option value="trust">Trust</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <button type="submit" class="submit-button">Submit</button>
+  </form>
+</div>
+
+<script>
+  const orgForm = document.getElementById('orgForm');
+
+  orgForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // prevent default submission
+
+    const orgName = document.getElementById('orgName').value.trim();
+    const regNumber = document.getElementById('regNumber').value.trim();
+    const orgType = document.getElementById('orgType').value;
+
+    // Basic validation
+    if (orgName === "") {
+      alert("Please enter organization name.");
+      return;
+    }
+    if (regNumber === "") {
+      alert("Please enter registration number.");
+      return;
+    }
+    if (orgType === "") {
+      alert("Please select organization type.");
+      return;
+    }
+
+    // Send data to backend
+    fetch("http://localhost:5000/org_register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orgName, regNumber, orgType })
+    })
+    .then(response => response.text())
+    .then(message => {
+      alert(message);
+      if (message.includes("success")) {
+        orgForm.reset();
+        window.location.href = "organizationdash.html"; // redirect after success
+      }
+    })
+    .catch(err => {
+      alert("Error: " + err);
+    });
+  });
+</script>
+
+</body>
+</html>

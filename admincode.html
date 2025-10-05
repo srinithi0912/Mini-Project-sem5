@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: cursive;
+      font-style: italic;
+      background: url("image/Admin page.jpg") no-repeat center center;
+      background-size: cover;   
+      display: flex;
+      justify-content: flex-start;   /* Center form horizontally */
+      align-items: center;       /* Center form vertically */
+      height: 100vh;
+      padding-left: 50px;
+    }
+
+    .adm-form-container {
+      background: white;
+      padding: 30px;
+      font-size: 24px;
+      border: 1.5px solid blueviolet;
+      border-radius: 20px;
+      width: 400px;
+      max-height: 90vh;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      font-weight: bold;
+      text-align: center;
+      color: #333;
+      animation: popup 0.5s ease-in-out;
+    }
+
+    .adm-form-container h2 {
+      margin: 5px 0 20px;
+      font-size: 26px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 95%;
+      padding: 10px;
+      font-family: cursive;
+      font-style: italic;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .submit-button {
+      width: 70%;
+      padding: 12px;
+      font-family: cursive;
+      font-style: italic;
+      font-size: 18px;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: black;
+    }
+
+    @keyframes popup {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    .back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    z-index: 1000;
+  }
+  .back-btn:hover {
+    background-color:whitesmoke;
+    transform: scale(1.1);
+  }
+  .back-btn:focus {
+    outline: none;
+  }
+
+  </style>
+</head>
+<body>
+
+  <button onclick="goBack()" class="back-btn">← </button>
+<div class="adm-form-container">
+  <h2 style="font-family: 'Lucida Calligraphy', cursive;">Welcome Admin!</h2>
+  <form id="admForm" autocomplete="off">
+    <div class="form-group">
+      <label for="Admincode">Admin Code</label>
+      <input type="password" id="Admincode" placeholder="Enter Admin Code" required>
+    </div>
+    <button type="submit" class="submit-button">Submit</button>
+  </form>
+</div>
+
+<script>
+  const admForm = document.getElementById('admForm');
+
+  admForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // prevent default submission
+
+    const admName = document.getElementById('Admincode').value.trim();
+
+    // Basic validation
+    if (admName === "") {
+      alert("Please enter Admin code.");
+      return;
+    }
+
+    // Send data to backend
+    fetch("http://localhost:5000/adm_register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ admName })
+    })
+    .then(response => response.text())
+    .then(message => {
+      alert(message);
+      if (message.includes("success")) {
+        admForm.reset();
+        window.location.href = "adminpage.html"; // redirect after success
+      }
+    })
+    .catch(err => {
+      alert("Error: " + err);
+    });
+  });
+</script>
+
+<script>
+function goBack() {
+    history.back();
+}
+</script>
+
+</body>
+</html>

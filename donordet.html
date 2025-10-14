@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,3 +150,156 @@ tr:hover {
   </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donors - WeShare</title>
+  <style>
+body {
+    margin: 0;
+    font-family: "Lucida Calligraphy", cursive;
+    background: url('image/donordet.jpg') no-repeat center center;
+    background-size: cover;
+    font-weight: bolder ;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black; /* semi-transparent */
+    color: white;
+    padding: 25px 50px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    width: 100%;
+    text-align: center;
+}
+.header h1 {
+    margin: 0;
+    font-size: 34px;
+}
+
+/* Back Button */
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    z-index: 1000;
+}
+.back-btn:hover {
+    background-color:whitesmoke;
+    transform: scale(1.1);
+}
+.back-btn:focus {
+    outline: none;
+}
+
+/* Table Container */
+.table-container {
+    width: 95%;
+    background: rgba(255,255,255,0.85); /* semi-transparent white */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px; /* slightly smaller font */
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 15px 20px;
+    text-align: left;
+}
+
+th {
+    background-color: darkcyan;
+    color: white;
+    font-size: 22px;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(242,242,242,0.8);
+}
+
+tr:hover {
+    background-color: rgba(173, 216, 230, 0.7); /* light transparent blue */
+}
+</style>
+
+</head>
+<body>
+  <div class="header">
+    <h1>Registered Donors</h1>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='adminpage.html#users'">&#8592;</button>
+  <table id="donorTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function loadDonors() {
+      try {
+        const res = await fetch("http://localhost:5000/users?role=Donor");
+        const donors = await res.json();
+
+        const tbody = document.querySelector("#donorTable tbody");
+        tbody.innerHTML = "";
+
+        donors.forEach(d => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${d.name}</td>
+            <td>${d.email}</td>
+            <td>${d.phone || '-'}</td>
+            <td>${d.address || '-'}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error loading donors:", err);
+        document.querySelector("#donorTable tbody").innerHTML = `
+          <tr><td colspan="4" style="color:red;">Failed to load donors.</td></tr>
+        `;
+      }
+    }
+
+    
+    loadDonors();
+  </script>
+</body>
+</html>
+>>>>>>> 0caec85 (Added images and web pages)

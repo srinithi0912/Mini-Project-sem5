@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -439,3 +440,446 @@
 
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeShare - Make a Difference</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html {
+       scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      background: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #fff;
+      background-size: cover;
+      background-position: right center;  /* 20% from left, 50% from top */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 30px;
+      font-weight: bold;
+      color: black;
+      font-family: "Lucida Calligraphy", cursive;
+
+
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-container img {
+      height: 40px;  /* adjust logo size */
+      width: 40px;
+      border-radius: 50%; /* optional: makes logo circular */
+    }
+
+    .logo-container span {
+      font-size: 30px;
+      font-weight: bold;
+      color: black;
+      font-family: "Lucida Calligraphy", cursive;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      font-family: "Lucida Calligraphy", cursive;
+      color: black;
+      font-size: 16px;
+      text-align: right;
+      font-weight: 900;
+    }
+
+    nav .donate-btn {
+      background: #e63946;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav .donate-btn:hover {
+      background: #d62828;
+    }
+
+    /* Hero Section */
+    header {
+      margin-top: 70px; /* space for navbar */  /* optional, keeps hero tall enough */
+      background: url("image/Front page.png") no-repeat center center;
+      background-size: cover;   
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      filter: brightness(1.5);
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4); /* dark overlay */
+    }
+
+    header h1, header p, header a {
+      position: relative; /* stay above overlay */
+    }
+
+    header h1 {
+      font-size: 42px;
+      margin-bottom: 15px;
+    }
+
+    header p {
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .btn-green {
+      position: absolute;  
+      top:60%;
+      left:45%;
+      background: white;
+      color: black;
+      padding: 12px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 18px;
+      transition: 0.3s;
+
+
+    }
+
+    .btn-green:hover {
+      background: #21867a;
+    }
+
+    section::before {
+  content: "";
+  display: block;
+  height: 90px; /* height of fixed navbar */
+  margin-top: -90px; /* negative margin equal to height */
+  visibility: hidden;
+}
+
+
+    /* Featured Campaigns */
+    section {
+      padding: 60px 40px;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    section h2 {
+      font-family: "Lucida Calligraphy", cursive;
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: black;
+    }
+
+    .campaigns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 20px;
+      text-align: left;
+    }
+
+    .card-content h3 {
+      font-family: "Lucida Calligraphy", cursive;
+      margin-bottom: 10px;
+      color: black;
+    }
+
+    .card-content p {
+      font-size: 14px;
+      color: #555;
+      height: 50px;
+      overflow: hidden;
+    }
+    .hero-img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    /* Right-side container for logo + donate button */
+   .logo-donate-right {
+      display: flex;
+      align-items: center;
+      gap: 10px; /* space between logo and button */
+  }
+
+/* Small logo next to donate button */
+.small-logo {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%; /* optional circular style */
+}
+
+  footer {
+    background-color: #1f2a38; /* dark footer background */
+    color: #ffffff;
+    text-align: center;
+    padding: 15px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .footer-container a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 12px;
+    transition: color 0.3s;
+  }
+
+  .footer-container a:hover {
+    color: #ff4c4c; /* hover color */
+  }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo-container">
+        <img src="image/logo.png" alt="Logo">
+        <span class="logo-text">WeShare</span>
+    </div>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#Events">Events</a></li>
+      <li><a href="#Organizations">Organizations</a></li>
+      <li><a href="#Volunteer">Volunteer</a></li>
+      <li><a href="login.html">Login</a></li>
+    </ul>
+    <div class="logo-donate-right">
+         <img src="image/donate logo.png" alt="Logo" class="small-logo">
+         <a href="donate.html" class="donate-btn" title="Donate to campaigns">Donate</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header>
+    
+    <a href="#campaigns" class="btn-green">Explore Campaigns</a>
+  </header>
+
+  <!-- Featured Campaigns -->
+  <section id="campaigns">
+    <h2>Featured Campaigns</h2>
+    <div class="campaigns">
+      <!-- Card 1 -->
+      <div class="card">
+        <img src="image/cleanup.png" alt="Cleanup Drive">
+        <div class="card-content">
+          <h3>Community Cleanup Drive</h3>
+          <p>Help clean up local parks and beaches to protect nature.</p>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="card">
+        <img src="image/child edu.jpg" alt="Child Education">
+        <div class="card-content">
+          <h3>Child Education Support</h3>
+          <p>Donate to help underprivileged children access quality education.</p>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="card">
+        <img src="image/Ocean con.png" alt="Ocean Conservation">
+        <div class="card-content">
+          <h3>Ocean Conservation</h3>
+          <p>Support initiatives that protect marine life and ecosystems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+    <!-- Events Section -->
+  <section id="Events">
+    <h2>Upcoming Events</h2>
+    <div class="campaigns">
+
+      <!--Card 1-->
+      <div class="card">
+        <img src="image/food donation.jpg" alt="Food Drive">
+        <div class="card-content">
+          <h3>Food Donation Drive</h3>
+          <p>Join us to collect and distribute food to families in need.</p>
+        </div>
+      </div>
+
+        <!--Card 2-->
+      <div class="card">
+        <img src="image/Cloth donation.png" alt="charity Drive">
+        <div class="card-content">
+          <h3>Clothes Donation Drive</h3>
+          <p>Join us to collect and distribute clothes to families in need.</p>
+        </div>
+      </div>
+
+      <!--Card 3-->
+      <div class="card">
+        <img src="image/Blood Donation.png" alt="charity Drive">
+        <div class="card-content">
+          <h3>Blood Donation Drive</h3>
+          <p>Join us to collect and distribute food to families in need.</p>
+        </div>
+      </div>
+
+      <!--Card 4-->
+      <div class="card">
+        <img src="image/tree plantation.png" alt="Tree Plantation">
+        <div class="card-content">
+          <h3>Tree Plantation</h3>
+          <p>Help plant trees in local communities and restore greenery.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Organizations Section -->
+  <section id="Organizations">
+    <h2>Partner Organizations</h2>
+    <div class="campaigns">
+      <div class="card">
+        <img src="image/Helping hands.png" alt="Helping Hands">
+        <div class="card-content">
+          <h3>Helping Hands</h3>
+          <p>A nonprofit focused on healthcare access for underprivileged families.</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="image/Educare found.jpg" alt="EduCare">
+        <div class="card-content">
+          <h3>EduCare Foundation</h3>
+          <p>Supporting education for children in rural and urban slums.</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="image/Health Care.png" alt="HealthCare">
+        <div class="card-content">
+          <h3>Health Care Partner</h3>
+          <p>Supporting education for children in rural and urban slums.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Volunteer Section -->
+  <section id="Volunteer">
+    <h2>Volunteer Opportunities</h2>
+    <div class="campaigns">
+      <div class="card">
+        <img src="image/Teaching kids.png" alt="Teaching Kids">
+        <div class="card-content">
+          <h3>Teach Children</h3>
+          <p>Spend your weekends teaching kids and making an impact.</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="image/Elderly Care.jpg" alt="Elderly Care">
+        <div class="card-content">
+          <h3>Elderly Care</h3>
+          <p>Help care for senior citizens in old-age homes with love and support.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background-color: #222; color: #fff; padding: 20px 0; text-align: center; font-family: Arial, sans-serif; font-size: 14px;">
+  <div style="margin-bottom: 10px;">
+    <a href="/terms" style="color: #fff; text-decoration: none; margin: 0 10px;">Terms & Services</a> |
+    <a href="/privacy" style="color: #fff; text-decoration: none; margin: 0 10px;">Privacy Policy</a> |
+    <a href="/contact" style="color: #fff; text-decoration: none; margin: 0 10px;">Contact Us</a>
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    © 2025 WeShare. All rights reserved.
+  </div>
+
+  <div>
+    <p style="margin: 5px 0;">
+      <strong>Contact Information:</strong> <br>
+      Email: <a href="mailto:support@weshare.com" style="color: #fff; text-decoration: underline;">support@weshare.com</a> | 
+      Phone: +91 98765 43210
+    </p>
+    <p style="margin: 5px 0;">
+      By using this website, you agree to our Terms & Services and Privacy Policy.
+    </p>
+  </div>
+</footer>
+
+
+
+</body>
+</html>
+>>>>>>> 0caec85 (Added images and web pages)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -481,3 +482,488 @@ document.getElementById('seeVolunteersOrg').addEventListener('click', () => {
 </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WeShare - Organization Hub</title>
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"/>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+  }
+  /* Common styles for pages */
+  .page {
+    display: none;
+  }
+  .active {
+    display: block;
+  }
+  /* Header styles */
+  .header {
+    background-color: #2196F3;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .header h1 {
+    margin: 0;
+    font-family: 'Pacifico', cursive;
+    font-size: 2.5em;
+  }
+  /* Buttons */
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 1em;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  button:hover {
+    transform: translateY(-2px);
+  }
+  /* Main page button styles */
+  #toOrgPage {
+    background-color:#2196F3;
+    color:#fff;
+  }
+  #toOrgPage:hover {
+    background-color:#1976D2;
+  }
+  /* Organization options buttons */
+  #postEventBtn, #viewProfileOrg, #seeVolunteersOrg {
+    background-color:#4CAF50;
+    color:#fff;
+  }
+  #postEventBtn:hover, #viewProfileOrg:hover, #seeVolunteersOrg:hover {
+    background-color:#388E3C;
+  }
+  /* Other buttons */
+  #backToMain, #orgBackToMain {
+    background-color:#f44336;
+  }
+  #backToMain:hover, #orgBackToMain:hover {
+    background-color:#da190b;
+  }
+  /* Card styles for events & volunteers */
+  .card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  h2 {
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  /* Layout for volunteer list */
+  .volunteer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  /* Post Event form styles */
+  #postEventForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  #postEventForm label {
+    font-weight: bold;
+    color: #555;
+  }
+  #postEventForm input, #postEventForm textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+  }
+  /* Page titles */
+  .page-title {
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Main Page -->
+<div id="mainPage" class="page active" style="text-align:center;">
+  <div class="header">
+    <h1>Welcome to WeShare</h1>
+  </div>
+  <div style="margin-top:40px;">
+    <button id="toOrgPage" style="background-color:#2196F3;">Organization</button>
+  </div>
+</div>
+
+<!-- Organization Main Page -->
+<div id="orgPage" class="page">
+  <div class="header">
+    <h1>WeShare - Organization</h1>
+  </div>
+  <button id="orgBackToMain" style="margin-bottom:20px;">Back</button>
+  <div class="page-title">Organization Options</div>
+  <div style="display:flex; flex-direction:column; align-items:center; gap:15px;">
+    <button id="postEventBtn">Post Events</button>
+    <button id="viewProfileOrg">View Profile</button>
+    <button id="seeVolunteersOrg">See Available Volunteers</button>
+    <button id="logout-btn"> Log Out</button>
+  </div>
+</div>
+
+<!-- Post Event Page -->
+<div id="postEventsPage" class="page" style="max-width:700px; margin:auto;">
+  <button id="postEventsBack" style="margin-bottom:20px;">Back</button>
+  <div class="header">
+    <h1>Post an Event</h1>
+  </div>
+  <div class="page-title">Create a New Event</div>
+  <form id="postEventForm" style="background:#fff; padding:20px; border-radius:12px;">
+    <label>Event ID:
+      <input type="text" id="eventId" placeholder="Enter event ID" required>
+    </label>
+    <label>Event Title:
+      <input type="text" id="eventTitle" placeholder="Enter event title" required>
+    </label>
+    <label>Event Description:
+      <textarea id="eventDesc" rows="4" placeholder="Describe the event" required></textarea>
+    </label>
+    <label>Event Type:
+      <select id="eventType" required>
+        <option value="">Select type</option>
+        <option value="Blood Donation">Blood Donation</option>
+        <option value="Food Drive">Food Drive</option>
+        <option value="Fundraiser">Fundraiser</option>
+        <option value="Other">Other</option>
+      </select>
+    </label>
+    <label>Start Date:
+      <input type="date" id="eventStartDate" required>
+    </label>
+    <label>End Date:
+      <input type="date" id="eventEndDate" required>
+    </label>
+    <label>Location:
+      <input type="text" id="eventLocation" placeholder="Event location" required>
+    </label>
+    <div style="margin-top:20px; text-align:center;">
+      <button type="submit" style="background-color:#4CAF50;">Post Event</button>
+    </div>
+  </form>
+</div>
+
+<!-- View Profile Page -->
+<div id="viewProfilePage" class="page" style="max-width:700px; margin:auto;">
+  <button id="profileBack" style="margin-bottom:20px;">Back</button>
+  <div class="header" style="background: linear-gradient(90deg,#2196F3 60%,#4CAF50 100%); box-shadow: 0 6px 24px rgba(33,150,243,0.15);">
+    <h1 style="font-family:'Pacifico',cursive;letter-spacing:2px;">Organization Profile</h1>
+  </div>
+  <div class="card" style="max-width:600px; margin:auto; box-shadow:0 8px 32px rgba(76,175,80,0.12); border:1px solid #e0e0e0;">
+    <div style="display:flex;align-items:center;gap:20px;">
+      <div style="flex:0 0 80px;">
+        <img id="orgLogoImg" src="" alt="Logo" style="width:80px;height:80px;border-radius:50%;border:2px solid #2196F3;object-fit:cover;background:#f0f2f5;">
+      </div>
+      <div style="flex:1;">
+        <h2 style="margin:0 0 10px 0;color:#2196F3;font-family:'Pacifico',cursive;">Our Profile</h2>
+        <div style="font-size:1.1em;">
+          <p><strong>Name:</strong> <span id="orgNameDisplay"></span></p>
+          <p><strong>Email:</strong> <span id="orgEmailDisplay"></span></p>
+          <p><strong>Phone:</strong> <span id="orgPhoneDisplay"></span></p>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:18px;">
+      <p style="font-size:1.1em;"><strong>Description:</strong> <span id="orgDescDisplay"></span></p>
+    </div>
+    <button id="editOrgProfileBtn" style="margin-top:15px;background:#2196F3;color:#fff;">Edit Profile</button>
+  </div>
+  <!-- Edit Profile Form -->
+  <form id="editOrgProfileForm" style="display:none; background:#fff; padding:20px; border-radius:12px; max-width:600px; margin:20px auto;box-shadow:0 4px 16px rgba(33,150,243,0.10);">
+    <label>Name: <input type="text" id="orgNameInput" /></label><br>
+    <label>Email: <input type="email" id="orgEmailInput" /></label><br>
+    <label>Phone: <input type="text" id="orgPhoneInput" /></label><br>
+    <label>Description: <input type="text" id="orgDescInput" /></label><br>
+    <label>Logo URL: <input type="text" id="orgLogoInput" /></label><br>
+    <div style="margin-top:10px;">
+      <button type="button" id="saveOrgProfileBtn" style="background:#4CAF50;color:#fff;">Save</button>
+      <button type="button" id="cancelOrgProfileBtn" style="background:#f44336;color:#fff;">Cancel</button>
+    </div>
+  </form>
+</div>
+
+<!-- Register as Volunteer Page -->
+<div id="orgRegisterPage" style="display:none;">
+  <div class="header">
+    <h1>Register as Volunteer</h1>
+  </div>
+  <form id="orgRegisterForm" style="max-width:600px; margin:auto; background:#fff; padding:20px; border-radius:12px;">
+    <label>Full Name:
+      <input type="text" id="orgVolunteerName" placeholder="Your full name" required>
+    </label>
+    <label>Email:
+      <input type="email" id="orgVolunteerEmail" placeholder="Your email" required>
+    </label>
+    <label>Phone Number:
+      <input type="tel" id="orgVolunteerPhone" placeholder="Your phone number" required>
+    </label>
+    <label>Skills/Experience:
+      <textarea id="orgVolunteerSkills" rows="3" placeholder="Share your skills or experience" required></textarea>
+    </label>
+    <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+      <button type="submit" style="background-color:#2196F3; color:#fff;">Register</button>
+      <button type="button" id="orgRegisterCancel" style="background-color:#f44336; color:#fff;">Cancel</button>
+    </div>
+  </form>
+</div>
+<div id="volunteersListPage" class="page" style="max-width:900px; margin:auto;">
+  <button id="volunteersBack" style="margin-bottom:20px;">Back</button>
+  <div class="header" style="background: linear-gradient(90deg,#4CAF50 60%,#2196F3 100%); box-shadow: 0 6px 24px rgba(76,175,80,0.15);">
+    <h1 style="font-family:'Pacifico',cursive;letter-spacing:2px;">Available Volunteers</h1>
+  </div>
+  <div id="volunteerListContainer" style="padding:0 20px;">
+    <!-- Volunteers will be loaded here -->
+  </div>
+</div>
+
+<script>
+  // Helper function to show/hide pages
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+  }
+
+  // Navigate to Organization page
+  document.getElementById('toOrgPage').addEventListener('click', () => {
+    showPage('orgPage');
+  });
+
+  // Organization page navigation
+  document.getElementById('orgBackToMain').addEventListener('click', () => {
+    showPage('mainPage');
+  });
+  document.getElementById('postEventBtn').addEventListener('click', () => {
+    showPage('postEventsPage');
+  });
+  document.getElementById('viewProfileOrg').addEventListener('click', () => {
+    showPage('viewProfilePage');
+  });
+  
+  function loadAvailableVolunteers() {
+  fetch('http://localhost:3001/api/organization/volunteers')
+    .then(res => res.json())
+    .then(volunteers => {
+      const container = document.getElementById('volunteerListContainer');
+      if(!container) return;
+      if (volunteers.length === 0) {
+        container.innerHTML = '<p style="text-align:center;font-size:1.2em;color:#888;">No volunteers registered for any event yet.</p>';
+        return;
+      }
+      // Group volunteers by event
+      const grouped = {};
+      volunteers.forEach(v => {
+        if (!grouped[v.event_id]) grouped[v.event_id] = { event_name: v.event_name, volunteers: [] };
+        grouped[v.event_id].volunteers.push(v);
+      });
+      container.innerHTML = Object.keys(grouped).map(eventId => {
+        const group = grouped[eventId];
+        return `
+          <div class="card" style="box-shadow:0 8px 32px rgba(33,150,243,0.10);margin-bottom:32px;">
+            <h3 style="color:#4CAF50;font-family:'Pacifico',cursive;">${group.event_name} <span style="font-size:0.8em;color:#2196F3;">(${eventId})</span></h3>
+            <table style="width:100%;border-collapse:collapse;margin-top:10px;">
+              <thead>
+                <tr style="background:#2196F3;color:#fff;">
+                  <th style="padding:10px;border-radius:8px 0 0 8px;">Name</th>
+                  <th style="padding:10px;">Email</th>
+                  <th style="padding:10px;">Phone</th>
+                  <th style="padding:10px;border-radius:0 8px 8px 0;">Skills</th>
+                </tr>
+              </thead>
+              <tbody>
+              ${group.volunteers.map(v => `
+                <tr style="background:#f8fff8;">
+                  <td style="padding:10px;">${v.name}</td>
+                  <td style="padding:10px;">${v.email}</td>
+                  <td style="padding:10px;">${v.phone}</td>
+                  <td style="padding:10px;">${v.skills}</td>
+                </tr>
+              `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }).join('');
+    });
+}
+
+document.getElementById('seeVolunteersOrg').addEventListener('click', () => {
+  showPage('volunteersListPage');
+  loadAvailableVolunteers();
+});
+  function loadOrganizationProfile() {
+    const email = sessionStorage.getItem('userEmail');
+    if (!email) return;
+    fetch(`http://localhost:3001/api/organization?email=${encodeURIComponent(email)}`)
+      .then(res => res.json())
+      .then(org => {
+        if (org) {
+          document.getElementById('orgNameDisplay').textContent = org.name;
+          document.getElementById('orgEmailDisplay').textContent = org.email;
+          document.getElementById('orgPhoneDisplay').textContent = org.phone;
+          document.getElementById('orgDescDisplay').textContent = org.description || '';
+          document.getElementById('orgLogoDisplay').textContent = org.logo || '';
+          // Pre-fill edit form
+          document.getElementById('orgNameInput').value = org.name;
+          document.getElementById('orgEmailInput').value = org.email;
+          document.getElementById('orgPhoneInput').value = org.phone;
+          document.getElementById('orgDescInput').value = org.description || '';
+          document.getElementById('orgLogoInput').value = org.logo || '';
+        }
+      });
+  }
+  
+  function showOrgProfileDetails() {
+    document.getElementById('editOrgProfileForm').style.display = 'none';
+    document.querySelector('#viewProfilePage .card').style.display = 'block';
+    loadOrganizationProfile();
+  }
+
+  function showOrgEditForm() {
+    document.querySelector('#viewProfilePage .card').style.display = 'none';
+    document.getElementById('editOrgProfileForm').style.display = 'block';
+  }
+
+  document.getElementById('viewProfileOrg').addEventListener('click', () => {
+    showPage('viewProfilePage');
+    showOrgProfileDetails();
+  });
+
+  document.getElementById('editOrgProfileBtn').addEventListener('click', () => {
+    showOrgEditForm();
+  });
+
+  document.getElementById('cancelOrgProfileBtn').addEventListener('click', () => {
+    showOrgProfileDetails();
+  });
+
+  document.getElementById('saveOrgProfileBtn').addEventListener('click', () => {
+    const email = sessionStorage.getItem('userEmail');
+    const updatedProfile = {
+      email: email,
+      name: document.getElementById('orgNameInput').value,
+      phone: document.getElementById('orgPhoneInput').value,
+      description: document.getElementById('orgDescInput').value,
+      logo: document.getElementById('orgLogoInput').value
+    };
+    fetch('http://localhost:3001/api/organization/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedProfile)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert('Profile updated successfully!');
+        showOrgProfileDetails();
+      } else {
+        alert('Error updating profile');
+      }
+    });
+  });
+   document.getElementById('viewProfileOrg').addEventListener('click', () => {
+    showPage('viewProfilePage');
+    loadOrganizationProfile();
+  });
+  // Post Event (Node.js backend integration)
+  document.getElementById('postEventForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = sessionStorage.getItem('userEmail');
+  if (!email) return alert("Please log in again.");
+
+  const data = {
+    eventId: document.getElementById('eventId').value,
+    eventTitle: document.getElementById('eventTitle').value,
+    eventDesc: document.getElementById('eventDesc').value,
+    eventType: document.getElementById('eventType').value,
+    eventStartDate: document.getElementById('eventStartDate').value,
+    eventEndDate: document.getElementById('eventEndDate').value,
+    eventLocation: document.getElementById('eventLocation').value,
+    email: email  
+  };
+
+  fetch('http://localhost:5000/api/events', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(resp => {
+    if(resp.success){
+      alert(resp.message);
+      document.getElementById('postEventForm').reset();
+      showPage('orgPage');
+    } else {
+      alert('Error: ' + resp.message);
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Error posting event: ' + err.message);
+  });
+});
+
+
+  document.getElementById('postEventsBack').addEventListener('click', () => {
+    showPage('orgPage');
+  });
+
+  // View Profile
+  document.getElementById('profileBack').addEventListener('click', () => {
+    showPage('orgPage');
+  });
+
+  // View Volunteers
+  document.getElementById('volunteersBack').addEventListener('click', () => {
+    showPage('orgPage');
+  });
+
+ 
+  document.getElementById('orgRegisterCancel').addEventListener('click', () => {
+    showPage('orgPage');
+  });
+  document.getElementById('orgRegisterForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Thank you for volunteering!');
+    document.getElementById('orgRegisterForm').reset();
+    showPage('orgPage');
+  });
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    window.location.href = 'login.html';
+  });
+  
+
+</script>
+</body>
+</html>
+>>>>>>> 0caec85 (Added images and web pages)

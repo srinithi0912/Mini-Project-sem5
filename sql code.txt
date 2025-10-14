@@ -1,0 +1,105 @@
+create DATABASE IF NOT EXISTS Weshare;
+Use Weshare;
+
+CREATE TABLE  IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      email VARCHAR(100),
+      password VARCHAR(255)
+);
+DESCRIBE users;
+drop table users;
+CREATE TABLE  IF NOT EXISTS users(
+      email VARCHAR(100),
+      password VARCHAR(255)
+);
+alter table users add primary key (email);
+desc users;
+drop table users;
+
+CREATE TABLE IF NOT EXISTS users (
+    email VARCHAR(100) PRIMARY KEY,   -- email will be unique and act as primary key
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(15),
+    address VARCHAR(255),
+    role ENUM('customer','designer','admin') NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+ALTER TABLE users
+MODIFY COLUMN role ENUM('Volunteer', 'Organization', 'Donor', 'Admin') NOT NULL;
+ALTER TABLE users MODIFY COLUMN role VARCHAR(50) NOT NULL;
+desc users;
+select * from users;
+DROP TABLE login;
+CREATE TABLE login (
+    email VARCHAR(100) ,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(email) REFERENCES users(email) ON DELETE CASCADE ON UPDATE CASCADE
+);
+desc login;
+select * from login;
+DROP TABLE IF EXISTS login;
+CREATE TABLE login (
+    email VARCHAR(100),
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY(email) REFERENCES users(email) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+select * from login;
+select * from users;
+SET SQL_SAFE_UPDATES = 0;
+
+delete from users where name="Srinithi S";
+SET SQL_SAFE_UPDATES = 1;
+select * from users;
+select * from login;
+CREATE TABLE admin_code (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  code_hash VARCHAR(255) NOT NULL
+);
+DELETE FROM admin_code;  -- optional, remove old hash
+INSERT INTO admin_code (code_hash) 
+VALUES ('$2b$10$NtVMBvTL6Q9P3VvvO5DE9uON5qttYkZ61c58.40GWs4VFd74LZFlK');
+delete from admin_code where id=3;
+select * from admin_code;
+delete from users where name="Ashifa Rihha M";
+SELECT * FROM users WHERE email = 'mrihha@gmail.com';
+DELETE FROM users 
+WHERE email = 'mrihha@gmail.com';
+CREATE TABLE organization (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  registration_number VARCHAR(100),
+  organization_type VARCHAR(100),
+  email VARCHAR(100) NOT NULL,
+  status ENUM('pending', 'approved', 'rejected') DEFAULT 'pending',
+  FOREIGN KEY(email) REFERENCES users(email) ON DELETE CASCADE ON UPDATE CASCADE
+);
+CREATE TABLE events (
+  event_id varchar(50) PRIMARY KEY,
+  title VARCHAR(255),
+  description text,
+  event_type VARCHAR(50) ,
+  start_date date,
+  end_date date,
+  location varchar(255)
+);
+ALTER TABLE events add email varchar(100);
+ALTER TABLE events add FOREIGN KEY(email) REFERENCES users(email) ON DELETE CASCADE ON UPDATE CASCADE;
+desc events;
+select * from users;
+INSERT INTO events (event_id, title, description, event_type, start_date, end_date, location, email)
+VALUES ('E001', 'Blood Drive', 'Donate blood to save lives', 'Blood Donation', '2025-10-10', '2025-10-12', 'Community Hall', 'guna@gmail.com');
+select * from events;
+
+
+
+
+
+
+
+
+
+
+
+
+    

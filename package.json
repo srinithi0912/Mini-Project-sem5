@@ -10,6 +10,10 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "engines": {
+  "node": "20.x"
+   },
+
   "dependencies": {
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
